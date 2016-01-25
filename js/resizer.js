@@ -131,10 +131,10 @@
       var x4 = this._container.width / 2;
       var y4 = this._container.height / 2;
 
-      this._ctx.fillRect(x1, y1, x4-x1, y2-y1);
-      this._ctx.fillRect(x1, y3, x4-x1, y4-y3);
-      this._ctx.fillRect(x1, y2, x2-x1, y3-y2);
-      this._ctx.fillRect(x3, y2, x4-x3, y3-y2);
+      this._ctx.fillRect(x1, y1, x4 - x1, y2 - y1);
+      this._ctx.fillRect(x1, y3, x4 - x1, y4 - y3);
+      this._ctx.fillRect(x1, y2, x2 - x1, y3 - y2);
+      this._ctx.fillRect(x3, y2, x4 - x3, y3 - y2);
 
       // Вывод размеров кадрируемого изображения
       this._ctx.fillStyle = '#fff';
