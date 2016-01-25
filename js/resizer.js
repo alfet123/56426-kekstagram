@@ -119,6 +119,33 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
+      // Рисование затемнения отсекаемой части
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+
+      var x1 = -this._container.width / 2;
+      var y1 = -this._container.height / 2;
+      var x2 = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      var y2 = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      var x3 = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+      var y3 = this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2;
+      var x4 = this._container.width / 2;
+      var y4 = this._container.height / 2;
+
+      this._ctx.fillRect(x1, y1, x4-x1, y2-y1);
+      this._ctx.fillRect(x1, y3, x4-x1, y4-y3);
+      this._ctx.fillRect(x1, y2, x2-x1, y3-y2);
+      this._ctx.fillRect(x3, y2, x4-x3, y3-y2);
+
+      // Вывод размеров кадрируемого изображения
+      this._ctx.fillStyle = '#fff';
+      this._ctx.font = '12px Arial';
+      this._ctx.textAlign = 'center';
+      this._ctx.textBaseline = 'bottom';
+
+      var text = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
+
+      this._ctx.fillText(text, 0, y2);
+
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
