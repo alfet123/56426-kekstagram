@@ -220,7 +220,7 @@
    * Если форма валидна, разрешает кнопку отправки.
    * @param {Event} evt
    */
-  resizeForm.onchange = function(evt) {
+  resizeForm.oninput = function(evt) {
     evt.preventDefault();
 
     var resizeFwd = resizeForm['resize-fwd'];
