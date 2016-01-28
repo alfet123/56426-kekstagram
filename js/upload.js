@@ -72,7 +72,20 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
+    var resizeX = parseInt(resizeForm['resize-x'].value, 10);
+    var resizeY = parseInt(resizeForm['resize-y'].value, 10);
+    var resizeSize = parseInt(resizeForm['resize-size'].value, 10);
+    var imageWidth = currentResizer._image.naturalWidth;
+    var imageHeight = currentResizer._image.naturalHeight;
+    var calcWidth = resizeX + resizeSize;
+    var calcHeight = resizeY + resizeSize;
+    var compareResult = false;
+
+    if ((calcWidth <= imageWidth) && (calcHeight <= imageHeight)) {
+      compareResult = true;
+    }
+
+    return compareResult;
   }
 
   /**
@@ -200,6 +213,19 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+  };
+
+  /**
+   * Обработка изменения формы кадрирования.
+   * Если форма валидна, разрешает кнопку отправки.
+   * @param {Event} evt
+   */
+  resizeForm.oninput = function(evt) {
+    evt.preventDefault();
+
+    var resizeFwd = resizeForm['resize-fwd'];
+
+    resizeFwd.disabled = !resizeFormIsValid();
   };
 
   /**
