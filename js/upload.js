@@ -1,4 +1,5 @@
 /* global Resizer: true */
+/* global docCookies: true */
 
 /**
  * @fileoverview
@@ -33,7 +34,11 @@
   /**
    * @type {Object.<string, string>}
    */
-  var filterMap;
+  var filterMap = {
+    'none': 'filter-none',
+    'chrome': 'filter-chrome',
+    'sepia': 'filter-sepia'
+  };
 
   /**
    * Объект, который занимается кадрированием изображения.
@@ -247,6 +252,29 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    var currentDate = new Date();
+    var currentDay = currentDate.getDate();
+    var currentMonth = currentDate.getMonth();
+    var currentYear = currentDate.getFullYear();
+
+    var birthDay = 3;
+    var birthMonth = 1;
+    var birthYear = currentYear;
+    if ( (birthMonth > currentMonth) || ((birthMonth === currentMonth) && (birthDay > currentDay)) ) {
+      birthYear -= 1;
+    }
+
+    var birthDate = new Date(birthYear, birthMonth, birthDay);
+
+    var daysPassed = Math.floor((currentDate - birthDate) / 86400000);
+
+    var dateToExpire = currentDate.valueOf() + daysPassed * 24 * 60 * 60 * 1000;
+    var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+    var uploadFilter = filterForm['upload-filter'].value;
+    var filterCookie = 'upload-filter=' + uploadFilter + ';expires=' + formattedDateToExpire;
+
+    document.cookie = filterCookie;
+
     cleanupResizer();
     updateBackground();
 
@@ -259,17 +287,6 @@
    * выбранному значению в форме.
    */
   filterForm.onchange = function() {
-    if (!filterMap) {
-      // Ленивая инициализация. Объект не создается до тех пор, пока
-      // не понадобится прочитать его в первый раз, а после этого запоминается
-      // навсегда.
-      filterMap = {
-        'none': 'filter-none',
-        'chrome': 'filter-chrome',
-        'sepia': 'filter-sepia'
-      };
-    }
-
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
@@ -280,6 +297,15 @@
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
 
+  function setFilter() {
+    var filterKey = docCookies.getItem('upload-filter');
+    var filterId = 'upload-' + filterMap[filterKey];
+
+    filterForm[filterId].checked = true;
+    filterImage.className = 'filter-image-preview ' + filterMap[filterKey];
+  }
+
+  setFilter();
   cleanupResizer();
   updateBackground();
 })();
