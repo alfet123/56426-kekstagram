@@ -20,9 +20,9 @@
     var IMAGE_TIMEOUT = 10000;
 
     if ('content' in template) {
-      element = template.content.children[0].cloneNode(true);
+      element = template.content.childNodes[1].cloneNode(true);
     } else {
-      element = template.children[0].cloneNode(true);
+      element = template.childNodes[1].cloneNode(true);
     }
 
     var newImage = new Image(182, 182);
