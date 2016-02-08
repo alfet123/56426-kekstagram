@@ -299,6 +299,10 @@
 
   function setFilter() {
     var filterKey = docCookies.getItem('upload-filter');
+    if (!filterKey) {
+      filterKey = 'none';
+    }
+
     var filterId = 'upload-' + filterMap[filterKey];
 
     filterForm[filterId].checked = true;
