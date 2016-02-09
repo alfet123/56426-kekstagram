@@ -81,7 +81,7 @@
     container.classList.add('pictures-loading');
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://o0.github.io/assets/json/pictures.json');
+    xhr.open('GET', '//o0.github.io/assets/json/pictures.json');
     xhr.timeout = IMAGE_TIMEOUT;
 
     xhr.onload = function(evt) {
