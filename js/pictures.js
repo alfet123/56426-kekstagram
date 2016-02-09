@@ -128,7 +128,6 @@
     newImage.onload = function() {
       clearTimeout(imageLoadTimeout);
       element.replaceChild(newImage, element.querySelector('img'));
-      element.querySelector('img').src = newImage.src;
     };
 
     newImage.onerror = function() {
