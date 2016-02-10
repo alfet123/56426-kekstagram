@@ -4,34 +4,59 @@
 
   var container = document.querySelector('.pictures');
   var filtersBlock = document.querySelector('.filters');
-  var filters = document.querySelectorAll('.filters-radio');
+  var filters = document.querySelector('.filters');
   var IMAGE_TIMEOUT = 10000;
   var MILLISECONDS_IN_DAY = 86400000;
+  var PAGE_SIZE = 12;
   var activeFilter = 'filter-popular';
+  var currentPage = 0;
+  var scrollTimeout;
   var pictures = [];
+  var filteredPictures = [];
 
   var currentDate = new Date();
   var currentDays = Math.floor(currentDate.getTime() / MILLISECONDS_IN_DAY);
 
   filtersBlock.classList.add('hidden');
 
-  for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = function(evt) {
-      var clickedElementID = evt.target.id;
-      setActiveFilter(clickedElementID);
-    };
-  }
+  filters.addEventListener('click', function(evt) {
+    var clickedElement = evt.target;
+    if (clickedElement.classList.contains('filters-radio')) {
+      setActiveFilter(clickedElement.id);
+    }
+  });
+
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      var picturesCoordinates = container.getBoundingClientRect();
+      var viewportSize = window.innerHeight;
+
+      if (picturesCoordinates.bottom <= viewportSize) {
+        if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
+          renderPictures(filteredPictures, ++currentPage, false);
+        }
+      }
+    }, 100);
+  });
 
   getPictures();
 
   /**
    * Вывод изображений
    */
-  function renderPictures(picturesToRender) {
-    container.innerHTML = '';
+  function renderPictures(picturesToRender, pageNumber, replace) {
+    if (replace) {
+      container.innerHTML = '';
+    }
+
     var fragment = document.createDocumentFragment();
 
-    picturesToRender.forEach(function(picture) {
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var pagePictures = picturesToRender.slice(from, to);
+
+    pagePictures.forEach(function(picture) {
       var element = getElementFromTemplate(picture);
       fragment.appendChild(element);
     });
@@ -49,7 +74,7 @@
 
     activeFilter = id;
 
-    var filteredPictures = pictures.slice(0);
+    filteredPictures = pictures.slice(0);
 
     switch (id) {
       case 'filter-new':
@@ -71,7 +96,7 @@
         break;
     }
 
-    renderPictures(filteredPictures);
+    renderPictures(filteredPictures, 0, true);
   }
 
   /**
@@ -90,8 +115,9 @@
       var rawData = evt.target.response;
       var loadedPictures = JSON.parse(rawData);
       pictures = loadedPictures;
+      filteredPictures = pictures.slice(0);
 
-      renderPictures(loadedPictures);
+      renderPictures(filteredPictures, 0, true);
     };
 
     xhr.onerror = function() {
