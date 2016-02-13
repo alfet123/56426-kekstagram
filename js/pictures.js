@@ -13,6 +13,7 @@
   var scrollTimeout;
   var pictures = [];
   var filteredPictures = [];
+  var viewportSize = window.innerHeight;
 
   var currentDate = new Date();
   var currentDays = Math.floor(currentDate.getTime() / MILLISECONDS_IN_DAY);
@@ -29,18 +30,18 @@
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function() {
-      var picturesCoordinates = container.getBoundingClientRect();
-      var viewportSize = window.innerHeight;
-
-      if (picturesCoordinates.bottom <= viewportSize) {
-        if (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)) {
-          renderPictures(filteredPictures, ++currentPage, false);
-        }
+      if (testCoordinates()) {
+        renderPictures(filteredPictures, ++currentPage, false);
       }
     }, 100);
   });
 
   getPictures();
+
+  function testCoordinates() {
+    var picturesCoordinates = container.getBoundingClientRect();
+    return ((picturesCoordinates.bottom <= viewportSize) && (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)));
+  }
 
   /**
    * Вывод изображений
@@ -72,8 +73,8 @@
       return;
     }
 
+    currentPage = 0;
     activeFilter = id;
-
     filteredPictures = pictures.slice(0);
 
     switch (id) {
@@ -97,6 +98,9 @@
     }
 
     renderPictures(filteredPictures, 0, true);
+    while (testCoordinates()) {
+      renderPictures(filteredPictures, ++currentPage, false);
+    }
   }
 
   /**
@@ -118,6 +122,9 @@
       filteredPictures = pictures.slice(0);
 
       renderPictures(filteredPictures, 0, true);
+      while (testCoordinates()) {
+        renderPictures(filteredPictures, ++currentPage, false);
+      }
     };
 
     xhr.onerror = function() {
