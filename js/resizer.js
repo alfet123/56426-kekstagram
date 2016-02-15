@@ -41,7 +41,10 @@
           side);
 
       // Отрисовка изначального состояния канваса.
-      this.redraw();
+      this.setConstraint(
+        this._container.width / 2 - side / 2,
+        this._container.height / 2 - side / 2,
+        side);
     }.bind(this);
 
     // Фиксирование контекста обработчиков.
