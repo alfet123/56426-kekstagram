@@ -50,7 +50,10 @@
    */
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
-      container.innerHTML = '';
+      var renderedElements = container.querySelectorAll('.picture');
+      [].forEach.call(renderedElements, function(el) {
+        container.removeChild(el);
+      });
     }
 
     var fragment = document.createDocumentFragment();
