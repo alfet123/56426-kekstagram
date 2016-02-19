@@ -1,4 +1,5 @@
 /* global Photo: true */
+/* global Gallery: true */
 
 'use strict';
 
@@ -16,6 +17,7 @@
   var pictures = [];
   var filteredPictures = [];
   var viewportSize = window.innerHeight;
+  var gallery = new Gallery();
 
   var currentDate = new Date();
   var currentDays = Math.floor(currentDate.getTime() / MILLISECONDS_IN_DAY);
@@ -52,6 +54,7 @@
     if (replace) {
       var renderedElements = container.querySelectorAll('.picture');
       [].forEach.call(renderedElements, function(el) {
+        el.removeEventListener('click', _onClick);
         container.removeChild(el);
       });
     }
@@ -66,9 +69,19 @@
       var pictureElement = new Photo(picture);
       pictureElement.render();
       fragment.appendChild(pictureElement.element);
+
+      pictureElement.element.addEventListener('click', _onClick);
     });
 
     container.appendChild(fragment);
+  }
+
+  /**
+   * Обработчик клика по изображению
+   */
+  function _onClick(evt) {
+    evt.preventDefault();
+    gallery.show();
   }
 
   /**
