@@ -16,6 +16,7 @@
   var scrollTimeout;
   var pictures = [];
   var filteredPictures = [];
+  var renderedElements = [];
   var viewportSize = window.innerHeight;
   var gallery = new Gallery();
 
@@ -52,11 +53,12 @@
    */
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
-      var renderedElements = container.querySelectorAll('.picture');
-      [].forEach.call(renderedElements, function(el) {
-        el.removeEventListener('click', _onClick);
-        container.removeChild(el);
-      });
+      var el;
+      while ((el = renderedElements.shift())) {
+        container.removeChild(el.element);
+        el.onClick = null;
+        el.remove();
+      }
     }
 
     var fragment = document.createDocumentFragment();
@@ -65,23 +67,21 @@
     var to = from + PAGE_SIZE;
     var pagePictures = picturesToRender.slice(from, to);
 
-    pagePictures.forEach(function(picture) {
+    renderedElements = renderedElements.concat(pagePictures.map(function(picture) {
       var pictureElement = new Photo(picture);
       pictureElement.render();
       fragment.appendChild(pictureElement.element);
 
-      pictureElement.element.addEventListener('click', _onClick);
-    });
+      pictureElement.onClick = function() {
+        gallery.setPictures(filteredPictures);
+        gallery.setCurrentPicture(0);
+        gallery.show();
+      };
+
+      return pictureElement;
+    }));
 
     container.appendChild(fragment);
-  }
-
-  /**
-   * Обработчик клика по изображению
-   */
-  function _onClick(evt) {
-    evt.preventDefault();
-    gallery.show();
   }
 
   /**
