@@ -5,6 +5,7 @@
   var Photo = function(data) {
 
     this._data = data;
+    this._onClick = this._onClick.bind(this);
 
   };
 
@@ -49,12 +50,13 @@
     },
 
     _onClick: function(evt) {
+      evt.preventDefault();
       if (!evt.target.classList.contains('picture-load-failure')) {
         if (typeof this.onClick === 'function') {
           this.onClick();
         }
       }
-    }.bind(this),
+    },
 
     onClick: null
 

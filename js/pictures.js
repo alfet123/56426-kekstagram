@@ -67,14 +67,14 @@
     var to = from + PAGE_SIZE;
     var pagePictures = picturesToRender.slice(from, to);
 
-    renderedElements = renderedElements.concat(pagePictures.map(function(picture) {
+    renderedElements = renderedElements.concat(pagePictures.map(function(picture, index) {
       var pictureElement = new Photo(picture);
       pictureElement.render();
       fragment.appendChild(pictureElement.element);
 
       pictureElement.onClick = function() {
         gallery.setPictures(filteredPictures);
-        gallery.setCurrentPicture(0);
+        gallery.setCurrentPicture(index + from);
         gallery.show();
       };
 
