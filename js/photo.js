@@ -5,6 +5,7 @@
   var Photo = function(data) {
 
     this._data = data;
+    this._onClick = this._onClick.bind(this);
 
   };
 
@@ -38,9 +39,26 @@
 
       newImage.src = this._data.url;
 
+      this.element.addEventListener('click', this._onClick);
+
       this.element.querySelector('.picture-comments').textContent = this._data.comments;
       this.element.querySelector('.picture-likes').textContent = this._data.likes;
-    }
+    },
+
+    remove: function() {
+      this.element.removeEventListener('click', this._onClick);
+    },
+
+    _onClick: function(evt) {
+      evt.preventDefault();
+      if (!evt.target.classList.contains('picture-load-failure')) {
+        if (typeof this.onClick === 'function') {
+          this.onClick();
+        }
+      }
+    },
+
+    onClick: null
 
   };
 
