@@ -39,9 +39,7 @@ require('gallery');
    */
   var PAGE_SIZE = 12;
 
-  var activeFilter = localStorage.getItem('activeFilter') || 'filter-popular';
-  document.getElementById(activeFilter).checked = true;
-
+  var activeFilter = 'filter-popular';
   var currentPage = 0;
   var scrollTimeout;
   var pictures = [];
@@ -218,5 +216,11 @@ require('gallery');
   }
 
   filters.classList.remove('hidden');
+
+  var restoredFilter = localStorage.getItem('activeFilter');
+  if (restoredFilter) {
+    document.getElementById(restoredFilter).checked = true;
+    setActiveFilter(restoredFilter);
+  }
 
 })();
