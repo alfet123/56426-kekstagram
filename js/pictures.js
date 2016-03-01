@@ -3,6 +3,9 @@
 
 'use strict';
 
+require('photo');
+require('gallery');
+
 (function() {
 
   var container = document.querySelector('.pictures');

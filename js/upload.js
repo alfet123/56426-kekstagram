@@ -8,6 +8,8 @@
 
 'use strict';
 
+require('resizer');
+
 (function() {
   /** @enum {string} */
   var FileType = {
