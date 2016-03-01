@@ -1,3 +1,9 @@
+/**
+ * Формирует сообщение о свойствах изображения
+ * @param {Array.<number>|number|boolean} a
+ * @param {Array.<number>|number=} b
+ * @return {string}
+ */
 function getMessage(a, b) {
   var result = '';
 

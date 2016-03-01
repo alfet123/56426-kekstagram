@@ -2,6 +2,11 @@
 
 (function() {
 
+  /**
+   * Конструктор для фотографии
+   * @constructor
+   * @param {Array.<Object>} data
+   */
   var Photo = function(data) {
 
     this._data = data;
@@ -11,6 +16,9 @@
 
   Photo.prototype = {
 
+    /**
+     * Отображение фотографии
+     */
     render: function() {
       var template = document.querySelector('#picture-template');
 
@@ -45,10 +53,17 @@
       this.element.querySelector('.picture-likes').textContent = this._data.likes;
     },
 
+    /**
+     * Удаление обработчика
+     */
     remove: function() {
       this.element.removeEventListener('click', this._onClick);
     },
 
+    /**
+     * Обработчик клика
+     * @param {Event} evt
+     */
     _onClick: function(evt) {
       evt.preventDefault();
       if (!evt.target.classList.contains('picture-load-failure')) {
@@ -58,6 +73,9 @@
       }
     },
 
+    /**
+     * @type {?Object}
+     */
     onClick: null
 
   };
