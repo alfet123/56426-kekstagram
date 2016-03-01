@@ -39,7 +39,7 @@ require('gallery');
    */
   var PAGE_SIZE = 12;
 
-  var activeFilter = 'filter-popular';
+  var activeFilter = localStorage.getItem('activeFilter') || 'filter-popular';
   var currentPage = 0;
   var scrollTimeout;
   var pictures = [];
@@ -137,10 +137,6 @@ require('gallery');
    * @param {string} id
    */
   function setActiveFilter(id) {
-    if (activeFilter === id) {
-      return;
-    }
-
     currentPage = 0;
     activeFilter = id;
     filteredPictures = pictures.slice(0);
@@ -191,10 +187,9 @@ require('gallery');
       pictures = loadedPictures;
       filteredPictures = pictures.slice(0);
 
-      renderPictures(filteredPictures, 0, true);
-      while (testCoordinates()) {
-        renderPictures(filteredPictures, ++currentPage, false);
-      }
+      var defaultFilter = localStorage.getItem('activeFilter') || activeFilter;
+      setActiveFilter(defaultFilter);
+      document.getElementById(defaultFilter).checked = true;
     };
 
     xhr.onerror = function() {
@@ -216,11 +211,5 @@ require('gallery');
   }
 
   filters.classList.remove('hidden');
-
-  var restoredFilter = localStorage.getItem('activeFilter');
-  if (restoredFilter) {
-    document.getElementById(restoredFilter).checked = true;
-    setActiveFilter(restoredFilter);
-  }
 
 })();
