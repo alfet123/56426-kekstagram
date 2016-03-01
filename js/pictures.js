@@ -187,9 +187,8 @@ require('gallery');
       pictures = loadedPictures;
       filteredPictures = pictures.slice(0);
 
-      var defaultFilter = localStorage.getItem('activeFilter') || activeFilter;
-      setActiveFilter(defaultFilter);
-      document.getElementById(defaultFilter).checked = true;
+      setActiveFilter(activeFilter);
+      document.getElementById(activeFilter).checked = true;
     };
 
     xhr.onerror = function() {
