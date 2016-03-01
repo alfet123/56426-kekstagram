@@ -40,6 +40,8 @@ require('gallery');
   var PAGE_SIZE = 12;
 
   var activeFilter = localStorage.getItem('activeFilter') || 'filter-popular';
+  document.getElementById(activeFilter).checked = true;
+
   var currentPage = 0;
   var scrollTimeout;
   var pictures = [];
