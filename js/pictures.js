@@ -39,7 +39,7 @@ require('gallery');
    */
   var PAGE_SIZE = 12;
 
-  var activeFilter = 'filter-popular';
+  var activeFilter = localStorage.getItem('activeFilter') || 'filter-popular';
   var currentPage = 0;
   var scrollTimeout;
   var pictures = [];
@@ -169,6 +169,8 @@ require('gallery');
     while (testCoordinates()) {
       renderPictures(filteredPictures, ++currentPage, false);
     }
+
+    localStorage.setItem('activeFilter', id);
   }
 
   /**
