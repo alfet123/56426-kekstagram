@@ -148,6 +148,8 @@ require('resizer');
     return uploadMessage;
   }
 
+  /**
+   */
   function hideMessage() {
     uploadMessage.classList.add('invisible');
   }
@@ -304,6 +306,9 @@ require('resizer');
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   });
 
+  /**
+   * Обработчик изменения на форме кадрирования
+   */
   window.addEventListener('resizerchange', function() {
     var resCons = currentResizer.getConstraint();
     resizeForm['resize-x'].value = Math.round(resCons.x);
@@ -311,6 +316,8 @@ require('resizer');
     resizeForm['resize-size'].value = Math.round(resCons.side);
   });
 
+  /**
+   */
   function setFilter() {
     var filterKey = docCookies.getItem('upload-filter');
     if (!filterKey) {

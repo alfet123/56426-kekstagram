@@ -8,12 +8,37 @@ require('gallery');
 
 (function() {
 
+  /**
+   * @type {HTMLElement}
+   */
   var container = document.querySelector('.pictures');
-  var filtersBlock = document.querySelector('.filters');
+
+  /**
+   * @type {HTMLElement}
+   */
   var filters = document.querySelector('.filters');
+
+  /**
+   * Таймаут загрузки изображения
+   * @const
+   * @type {number}
+   */
   var IMAGE_TIMEOUT = 10000;
+
+  /**
+   * Количество миллисекунд в сутках
+   * @const
+   * @type {number}
+   */
   var MILLISECONDS_IN_DAY = 86400000;
+
+  /**
+   * Количество фотографий на странице
+   * @const
+   * @type {number}
+   */
   var PAGE_SIZE = 12;
+
   var activeFilter = 'filter-popular';
   var currentPage = 0;
   var scrollTimeout;
@@ -21,13 +46,22 @@ require('gallery');
   var filteredPictures = [];
   var renderedElements = [];
   var viewportSize = window.innerHeight;
+
+  /**
+   * Создание новой галереи
+   * @type {Gallery}
+   */
   var gallery = new Gallery();
 
   var currentDate = new Date();
   var currentDays = Math.floor(currentDate.getTime() / MILLISECONDS_IN_DAY);
 
-  filtersBlock.classList.add('hidden');
+  filters.classList.add('hidden');
 
+  /**
+   * Обработчик клика по фильтру
+   * @param {Event} evt
+   */
   filters.addEventListener('click', function(evt) {
     var clickedElement = evt.target;
     if (clickedElement.classList.contains('filters-radio')) {
@@ -35,6 +69,10 @@ require('gallery');
     }
   });
 
+  /**
+   * Обработчик прокрутки страницы
+   * @param {Event} evt
+   */
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function() {
@@ -46,6 +84,10 @@ require('gallery');
 
   getPictures();
 
+  /**
+   * Проверка достижения нижнего края страницы
+   * @return {boolean}
+   */
   function testCoordinates() {
     var picturesCoordinates = container.getBoundingClientRect();
     return ((picturesCoordinates.bottom <= viewportSize) && (currentPage < Math.ceil(filteredPictures.length / PAGE_SIZE)));
@@ -53,6 +95,9 @@ require('gallery');
 
   /**
    * Вывод изображений
+   * @param {Array.<Object>} picturesToRender
+   * @param {number} pageNumber
+   * @param {boolean=} replace
    */
   function renderPictures(picturesToRender, pageNumber, replace) {
     if (replace) {
@@ -89,6 +134,7 @@ require('gallery');
 
   /**
    * Установка выбранного фильтра
+   * @param {string} id
    */
   function setActiveFilter(id) {
     if (activeFilter === id) {
@@ -161,12 +207,12 @@ require('gallery');
   }
 
   /**
-   * Сообщение об ошибке
+   * Вывод сообщения об ошибке
    */
   function failureMessage() {
     container.classList.add('pictures-failure');
   }
 
-  filtersBlock.classList.remove('hidden');
+  filters.classList.remove('hidden');
 
 })();
