@@ -149,6 +149,7 @@ require('resizer');
   }
 
   /**
+   * Скрытие сообщения о загрузке
    */
   function hideMessage() {
     uploadMessage.classList.add('invisible');
@@ -317,6 +318,7 @@ require('resizer');
   });
 
   /**
+   * Установка фильтра
    */
   function setFilter() {
     var filterKey = docCookies.getItem('upload-filter');
