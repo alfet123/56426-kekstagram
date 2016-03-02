@@ -50,13 +50,20 @@
 
     /**
      * Установка текущего изображения галереи
-     * @param {number} number
+     * @param {number|string} picture
      */
-    setCurrentPicture: function(number) {
-      this._number = number;
-      this.element.querySelector('.gallery-overlay-image').src = this._data[number].url;
-      this.element.querySelector('.likes-count').textContent = this._data[number].likes;
-      this.element.querySelector('.comments-count').textContent = this._data[number].comments;
+    setCurrentPicture: function(picture) {
+      switch (typeof picture) {
+        case 'number':
+          this._number = picture;
+          this.element.querySelector('.gallery-overlay-image').src = this._data[picture].url;
+          this.element.querySelector('.likes-count').textContent = this._data[picture].likes;
+          this.element.querySelector('.comments-count').textContent = this._data[picture].comments;
+          break;
+        case 'string':
+          break;
+        default:
+      }
     },
 
     /**
@@ -72,7 +79,7 @@
      * Обработчик клика по кнопке закрытия
      */
     _onCloseClick: function() {
-      this.hide();
+      location.hash = '';
     },
 
     /**
@@ -82,7 +89,7 @@
     _onKeyDown: function(evt) {
       switch (evt.keyCode) {
         case 27:
-          this.hide();
+          location.hash = '';
           break;
         case 37:
           if (this._data[this._number - 1]) {
