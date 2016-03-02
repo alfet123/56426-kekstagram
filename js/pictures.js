@@ -98,6 +98,17 @@ require('gallery');
     }
   });
 
+  /**
+   * Обработчик загрузки страницы
+   */
+  window.addEventListener('load', function() {
+    if (location.hash.length > 0) {
+      gallery.setPictures(filteredPictures);
+      gallery.setCurrentPicture(location.hash);
+      gallery.show();
+    }
+  });
+
   getPictures();
 
   /**
