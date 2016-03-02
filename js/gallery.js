@@ -61,6 +61,7 @@
           this.element.querySelector('.comments-count').textContent = this._data[picture].comments;
           break;
         case 'string':
+          this.element.querySelector('.gallery-overlay-image').src = picture.match( /#img\/(\S+)/ )[1];
           break;
         default:
       }

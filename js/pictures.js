@@ -137,7 +137,7 @@ require('gallery');
       fragment.appendChild(pictureElement.element);
 
       pictureElement.onClick = function() {
-        location.hash = '#photo/' + this._data.url;
+        location.hash = '#img/' + this._data.url;
       };
 
       return pictureElement;
