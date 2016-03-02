@@ -71,7 +71,6 @@ require('gallery');
 
   /**
    * Обработчик прокрутки страницы
-   * @param {Event} evt
    */
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
@@ -80,6 +79,34 @@ require('gallery');
         renderPictures(filteredPictures, ++currentPage, false);
       }
     }, 100);
+  });
+
+  /**
+   * Обработчик изменения адресной строки
+   */
+  window.addEventListener('hashchange', function() {
+    switch (location.hash.length > 0) {
+      case true:
+        gallery.setPictures(filteredPictures);
+        gallery.setCurrentPicture(location.hash);
+        gallery.show();
+        break;
+      case false:
+        gallery.hide();
+        break;
+      default:
+    }
+  });
+
+  /**
+   * Обработчик загрузки страницы
+   */
+  window.addEventListener('load', function() {
+    if (location.hash.length > 0) {
+      gallery.setPictures(filteredPictures);
+      gallery.setCurrentPicture(location.hash);
+      gallery.show();
+    }
   });
 
   getPictures();
@@ -115,15 +142,13 @@ require('gallery');
     var to = from + PAGE_SIZE;
     var pagePictures = picturesToRender.slice(from, to);
 
-    renderedElements = renderedElements.concat(pagePictures.map(function(picture, index) {
+    renderedElements = renderedElements.concat(pagePictures.map(function(picture) {
       var pictureElement = new Photo(picture);
       pictureElement.render();
       fragment.appendChild(pictureElement.element);
 
       pictureElement.onClick = function() {
-        gallery.setPictures(filteredPictures);
-        gallery.setCurrentPicture(index + from);
-        gallery.show();
+        location.hash = '#img/' + this._data.url;
       };
 
       return pictureElement;
