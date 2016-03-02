@@ -77,8 +77,9 @@
      * Обработчик клика по фотографии
      */
     _onPhotoClick: function() {
-      if (this._data[this._number + 1]) {
-        this.setCurrentPicture(++this._number);
+      var index = this.getIndex();
+      if (this._data[index + 1]) {
+        location.hash = '#img/' + this._data[index + 1].url;
       }
     },
 
@@ -94,22 +95,38 @@
      * @param {Event} evt
      */
     _onKeyDown: function(evt) {
+      var index;
       switch (evt.keyCode) {
         case 27:
           location.hash = '';
           break;
         case 37:
-          if (this._data[this._number - 1]) {
-            this.setCurrentPicture(--this._number);
+          index = this.getIndex();
+          if (this._data[index - 1]) {
+            location.hash = '#img/' + this._data[index - 1].url;
           }
           break;
         case 39:
-          if (this._data[this._number + 1]) {
-            this.setCurrentPicture(++this._number);
+          index = this.getIndex();
+          if (this._data[index + 1]) {
+            location.hash = '#img/' + this._data[index + 1].url;
           }
           break;
         default:
       }
+    },
+
+    /**
+     * Получение индекса текущего изображения галереи
+     * @return {number}
+     */
+    getIndex: function() {
+      var url = location.hash.match( /#img\/(\S+)/ )[1];
+      var index = 0;
+      while ((this._data[index].url !== url) && index < this._data.length) {
+        index++;
+      }
+      return index;
     }
 
   };
