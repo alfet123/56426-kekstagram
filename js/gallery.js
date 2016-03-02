@@ -61,7 +61,13 @@
           this.element.querySelector('.comments-count').textContent = this._data[picture].comments;
           break;
         case 'string':
-          this.element.querySelector('.gallery-overlay-image').src = picture.match( /#img\/(\S+)/ )[1];
+          var _url = picture.match( /#img\/(\S+)/ )[1];
+          var result = this._data.filter(function(item) {
+            return item.url === _url;
+          });
+          this.element.querySelector('.gallery-overlay-image').src = result[0].url;
+          this.element.querySelector('.likes-count').textContent = result[0].likes;
+          this.element.querySelector('.comments-count').textContent = result[0].comments;
           break;
         default:
       }
